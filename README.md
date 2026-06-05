@@ -78,19 +78,197 @@ The main implementation of DriftQL is in [agents/driftql.py](agents/driftql.py),
 Here are some example commands:
 
 ```bash
-# DriftQL on OGBench antsoccer-arena
-python main.py \
-    --env_name=antsoccer-arena-navigate-singletask-v0 \
-    --agent.discount=0.995 \
-    --agent.alpha=10 \
-    --agent.drift_temp=0.5 \
-    --agent.q_agg=mean
+# DriftQL on OGBench antsoccer-arena-task1
+python main.py --env_name=antsoccer-arena-navigate-singletask-task1-v0 --agent.discount=0.995 --agent.alpha=10 --agent.drift_temp=0.5 --agent.q_agg=mean
 
 # DriftQL on D4RL halfcheetah-medium-expert
-python main.py \
-    --env_name=halfcheetah-medium-expert-v2 \
-    --agent.alpha=300
+python main.py --env_name=halfcheetah-medium-expert-v2 --agent.drift_temp=0.5 --agent.alpha=300 --agent.q_agg=mean
 ```
+
+🌟 The full set of commands used to produce our results is listed below. The `--agent.*` flags override
+entries in `get_config()`; any hyperparameter not shown keeps its default (e.g. `lr=3e-4`,
+`batch_size=256`, `tau=0.005`, `kernel=laplace`, `q_agg=min`, `discount=0.99`, `drift_ngen=32`,
+`noise_dim=action_dim`). Add `--seed=<n>` to change the random seed. For the OGBench suites we report
+over five singletask variants (`task1`–`task5`), all listed explicitly.
+
+<details>
+<summary><b>OGBench</b></summary>
+
+```bash
+# humanoidmaze-medium-navigate
+python main.py --env_name=humanoidmaze-medium-navigate-singletask-task1-v0 --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-medium-navigate-singletask-task2-v0 --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-medium-navigate-singletask-task3-v0 --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-medium-navigate-singletask-task4-v0 --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-medium-navigate-singletask-task5-v0 --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+
+# humanoidmaze-large-navigate
+python main.py --env_name=humanoidmaze-large-navigate-singletask-task1-v0 --agent.drift_temp=0.2 --agent.alpha=32 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-large-navigate-singletask-task2-v0 --agent.drift_temp=0.2 --agent.alpha=32 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-large-navigate-singletask-task3-v0 --agent.drift_temp=0.2 --agent.alpha=32 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-large-navigate-singletask-task4-v0 --agent.drift_temp=0.2 --agent.alpha=32 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=humanoidmaze-large-navigate-singletask-task5-v0 --agent.drift_temp=0.2 --agent.alpha=32 --agent.discount=0.995 --agent.q_agg=mean
+
+# antmaze-large-navigate
+python main.py --env_name=antmaze-large-navigate-singletask-task1-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+python main.py --env_name=antmaze-large-navigate-singletask-task2-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+python main.py --env_name=antmaze-large-navigate-singletask-task3-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+python main.py --env_name=antmaze-large-navigate-singletask-task4-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+python main.py --env_name=antmaze-large-navigate-singletask-task5-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+
+# antmaze-giant-navigate
+python main.py --env_name=antmaze-giant-navigate-singletask-task1-v0 --agent.drift_temp=0.2 --agent.alpha=10 --agent.discount=0.995
+python main.py --env_name=antmaze-giant-navigate-singletask-task2-v0 --agent.drift_temp=0.2 --agent.alpha=10 --agent.discount=0.995
+python main.py --env_name=antmaze-giant-navigate-singletask-task3-v0 --agent.drift_temp=0.2 --agent.alpha=10 --agent.discount=0.995
+python main.py --env_name=antmaze-giant-navigate-singletask-task4-v0 --agent.drift_temp=0.2 --agent.alpha=10 --agent.discount=0.995
+python main.py --env_name=antmaze-giant-navigate-singletask-task5-v0 --agent.drift_temp=0.2 --agent.alpha=10 --agent.discount=0.995
+
+# antsoccer-arena-navigate
+python main.py --env_name=antsoccer-arena-navigate-singletask-task1-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=antsoccer-arena-navigate-singletask-task2-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=antsoccer-arena-navigate-singletask-task3-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=antsoccer-arena-navigate-singletask-task4-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.discount=0.995 --agent.q_agg=mean
+python main.py --env_name=antsoccer-arena-navigate-singletask-task5-v0 --agent.drift_temp=0.5 --agent.alpha=10 --agent.discount=0.995 --agent.q_agg=mean
+
+# cube-single-play
+python main.py --env_name=cube-single-play-singletask-task1-v0 --agent.drift_temp=0.02 --agent.alpha=60 --agent.discount=0.995 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-single-play-singletask-task2-v0 --agent.drift_temp=0.02 --agent.alpha=60 --agent.discount=0.995 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-single-play-singletask-task3-v0 --agent.drift_temp=0.02 --agent.alpha=60 --agent.discount=0.995 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-single-play-singletask-task4-v0 --agent.drift_temp=0.02 --agent.alpha=60 --agent.discount=0.995 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-single-play-singletask-task5-v0 --agent.drift_temp=0.02 --agent.alpha=60 --agent.discount=0.995 --agent.q_agg=mean --agent.kernel=gaussian
+
+# cube-double-play
+python main.py --env_name=cube-double-play-singletask-task1-v0 --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-double-play-singletask-task2-v0 --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-double-play-singletask-task3-v0 --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-double-play-singletask-task4-v0 --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=cube-double-play-singletask-task5-v0 --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+
+# scene-play
+python main.py --env_name=scene-play-singletask-task1-v0 --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+python main.py --env_name=scene-play-singletask-task2-v0 --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+python main.py --env_name=scene-play-singletask-task3-v0 --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+python main.py --env_name=scene-play-singletask-task4-v0 --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+python main.py --env_name=scene-play-singletask-task5-v0 --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+
+# puzzle-3x3-play
+python main.py --env_name=puzzle-3x3-play-singletask-task1-v0 --agent.drift_temp=0.5 --agent.alpha=50 --agent.kernel=gaussian
+python main.py --env_name=puzzle-3x3-play-singletask-task2-v0 --agent.drift_temp=0.5 --agent.alpha=50 --agent.kernel=gaussian
+python main.py --env_name=puzzle-3x3-play-singletask-task3-v0 --agent.drift_temp=0.5 --agent.alpha=50 --agent.kernel=gaussian
+python main.py --env_name=puzzle-3x3-play-singletask-task4-v0 --agent.drift_temp=0.5 --agent.alpha=50 --agent.kernel=gaussian
+python main.py --env_name=puzzle-3x3-play-singletask-task5-v0 --agent.drift_temp=0.5 --agent.alpha=50 --agent.kernel=gaussian
+
+# puzzle-4x4-play
+python main.py --env_name=puzzle-4x4-play-singletask-task1-v0 --agent.drift_temp=0.8 --agent.alpha=300 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=puzzle-4x4-play-singletask-task2-v0 --agent.drift_temp=0.8 --agent.alpha=300 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=puzzle-4x4-play-singletask-task3-v0 --agent.drift_temp=0.8 --agent.alpha=300 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=puzzle-4x4-play-singletask-task4-v0 --agent.drift_temp=0.8 --agent.alpha=300 --agent.q_agg=mean --agent.kernel=gaussian
+python main.py --env_name=puzzle-4x4-play-singletask-task5-v0 --agent.drift_temp=0.8 --agent.alpha=300 --agent.q_agg=mean --agent.kernel=gaussian
+```
+
+</details>
+
+<details>
+<summary><b>D4RL - AntMaze</b></summary>
+
+```bash
+# antmaze-large-play
+python main.py --env_name=antmaze-large-play-v2 --agent.drift_temp=0.5 --agent.alpha=3 --agent.discount=0.995 --agent.kernel=gaussian
+
+# antmaze-medium-diverse
+python main.py --env_name=antmaze-medium-diverse-v2 --agent.drift_temp=0.5 --agent.alpha=8 --agent.discount=0.995 --agent.kernel=gaussian
+
+# antmaze-medium-play
+python main.py --env_name=antmaze-medium-play-v2 --agent.drift_temp=0.5 --agent.alpha=5 --agent.kernel=gaussian
+
+# antmaze-umaze-diverse
+python main.py --env_name=antmaze-umaze-diverse-v2 --agent.drift_temp=0.5 --agent.alpha=12 --agent.q_agg=mean
+
+# antmaze-umaze
+python main.py --env_name=antmaze-umaze-v2 --agent.drift_temp=0.5 --agent.alpha=15
+
+# antmaze-large-diverse
+python main.py --env_name=antmaze-large-diverse-v2 --agent.drift_temp=0.5 --agent.alpha=5 --agent.discount=0.995 --agent.kernel=gaussian
+```
+
+</details>
+
+<details>
+<summary><b>D4RL - Adroit</b></summary>
+
+```bash
+# door-cloned
+python main.py --env_name=door-cloned-v1 --agent.drift_temp=0.2 --agent.alpha=4500 --agent.discount=0.995
+
+# door-expert
+python main.py --env_name=door-expert-v1 --agent.drift_temp=0.2 --agent.alpha=4500 --agent.discount=0.995 --agent.q_agg=mean
+
+# door-human
+python main.py --env_name=door-human-v1 --agent.drift_temp=0.2 --agent.alpha=4500 --agent.discount=0.995 --agent.q_agg=mean
+
+# hammer-cloned
+python main.py --env_name=hammer-cloned-v1 --agent.drift_temp=0.05 --agent.alpha=2500 --agent.q_agg=mean
+
+# hammer-expert
+python main.py --env_name=hammer-expert-v1 --agent.drift_temp=0.05 --agent.alpha=2500 --agent.discount=0.995
+
+# hammer-human
+python main.py --env_name=hammer-human-v1 --agent.drift_temp=0.05 --agent.alpha=2500 --agent.discount=0.995 --agent.q_agg=mean
+
+# pen-cloned
+python main.py --env_name=pen-cloned-v1 --agent.drift_temp=0.05 --agent.alpha=1500 --agent.discount=0.995 --agent.kernel=gaussian
+
+# pen-expert
+python main.py --env_name=pen-expert-v1 --agent.drift_temp=0.9 --agent.alpha=2000
+
+# pen-human
+python main.py --env_name=pen-human-v1 --agent.drift_temp=0.05 --agent.alpha=2000 --agent.discount=0.995 --agent.q_agg=mean
+
+# relocate-cloned
+python main.py --env_name=relocate-cloned-v1 --agent.drift_temp=0.2 --agent.alpha=5000 --agent.discount=0.995
+
+# relocate-expert
+python main.py --env_name=relocate-expert-v1 --agent.drift_temp=0.2 --agent.alpha=5000 --agent.discount=0.995
+
+# relocate-human
+python main.py --env_name=relocate-human-v1 --agent.drift_temp=0.2 --agent.alpha=5000 --agent.discount=0.995
+```
+
+</details>
+
+<details>
+<summary><b>D4RL - Gym locomotion (MuJoCo)</b></summary>
+
+```bash
+# halfcheetah-medium-expert
+python main.py --env_name=halfcheetah-medium-expert-v2 --agent.drift_temp=0.5 --agent.alpha=300 --agent.q_agg=mean
+
+# halfcheetah-medium-replay
+python main.py --env_name=halfcheetah-medium-replay-v2 --agent.drift_temp=0.5 --agent.alpha=10 --agent.discount=0.995
+
+# halfcheetah-medium
+python main.py --env_name=halfcheetah-medium-v2 --agent.drift_temp=0.5 --agent.alpha=3 --agent.q_agg=mean
+
+# hopper-medium-expert
+python main.py --env_name=hopper-medium-expert-v2 --agent.drift_temp=0.1 --agent.alpha=600 --agent.discount=0.995 --agent.kernel=gaussian
+
+# hopper-medium-replay
+python main.py --env_name=hopper-medium-replay-v2 --agent.drift_temp=0.1 --agent.alpha=100 --agent.discount=0.995 --agent.kernel=gaussian
+
+# hopper-medium
+python main.py --env_name=hopper-medium-v2 --agent.drift_temp=0.1 --agent.alpha=100 --agent.discount=0.995 --agent.kernel=gaussian
+
+# walker2d-medium-expert
+python main.py --env_name=walker2d-medium-expert-v2 --agent.drift_temp=0.1 --agent.alpha=1000 --agent.q_agg=mean
+
+# walker2d-medium-replay
+python main.py --env_name=walker2d-medium-replay-v2 --agent.drift_temp=0.1 --agent.alpha=300 --agent.discount=0.995
+
+# walker2d-medium
+python main.py --env_name=walker2d-medium-v2 --agent.drift_temp=0.1 --agent.alpha=1000 --agent.discount=0.995
+```
+
+</details>
 
 
 ## Citation

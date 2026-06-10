@@ -1,0 +1,71 @@
+# ============================================================================
+# Phase 2: breadth check on 3 more OGBench envs (8 seeds, base vs qt_lam2)
+# Run alongside or after Phase 1:
+#   GPUS="0,1,2,3,4,5,6,7" JOBS_PER_GPU=3 bash scripts/launch_all.sh scripts/phase2_commands.txt
+# ============================================================================
+
+# ---------------- C. cube-double task2 (official default/tuning task: paper 23, FQL 36) ----------------
+
+# Baseline DriftQL
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 0 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 1 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 2 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 3 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 4 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 5 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 6 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task2-v0 7 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+
+# QT-DriftQL, lambda=2
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 4 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 5 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 6 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task2-v0 7 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+
+# ---------------- D. humanoidmaze-medium task1 (paper 28, IFQL 69 - biggest gap to flow methods) ----------------
+
+# Baseline DriftQL
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 0 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 1 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 2 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 3 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 4 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 5 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 6 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql humanoidmaze-medium-navigate-singletask-task1-v0 7 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean
+
+# QT-DriftQL, lambda=2
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 4 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 5 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 6 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 humanoidmaze-medium-navigate-singletask-task1-v0 7 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=65 --agent.discount=0.998 --agent.q_agg=mean --agent.tilt_lambda=2.0
+
+# ---------------- E. scene-play task2 (paper 89 - upside/regression check) ----------------
+
+# Baseline DriftQL
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 0 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 1 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 2 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 3 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 4 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 5 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 6 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql scene-play-singletask-task2-v0 7 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian
+
+# QT-DriftQL, lambda=2
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 4 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 5 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 6 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 scene-play-singletask-task2-v0 7 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.alpha=250 --agent.discount=0.995 --agent.kernel=gaussian --agent.tilt_lambda=2.0

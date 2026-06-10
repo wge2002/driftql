@@ -83,9 +83,10 @@ bash scripts/collect_results.sh     # -> results_<timestamp>.tar.gz
 **Loss terms**: `drift_loss`, `drift_loss_weighted`, `drift_norm`, `drift_attract_norm`,
 `drift_repel_norm`, `q_loss`, `q`.
 
-## 5. Phase-1 experiment matrix (`scripts/phase1_commands.txt`)
+## 5. Experiment matrix
 
-Two envs sharing the same tags, 4 seeds each:
+**Phase 1** (`scripts/phase1_commands.txt`, 88 runs): two envs sharing the same tags, **8 seeds**
+(paper protocol):
 
 | Tag | Agent | What it tests |
 |---|---|---|
@@ -99,13 +100,33 @@ Two envs sharing the same tags, 4 seeds each:
 Envs: `cube-double-play-singletask-task1-v0` (DriftQL's weak spot, paper: 49±1, FQL: 61) and
 `antmaze-large-navigate-singletask-task1-v0` (DriftQL's strength, paper: 95±2 — regression check).
 
-Launch on the server:
+**Phase 2** (`scripts/phase2_commands.txt`, 48 runs): breadth check, 8 seeds, `base_driftql` vs
+`qt_lam2` on `cube-double-play-singletask-task2-v0` (official tuning task, paper: 23),
+`humanoidmaze-medium-navigate-singletask-task1-v0` (paper: 28 vs IFQL 69 — biggest gap to flow
+methods), and `scene-play-singletask-task2-v0` (paper: 89 — upside/regression check).
+
+### Environment setup (do this once, in a dedicated env — do NOT pip install into system python)
+
+Phase 1/2 are OGBench-only, so **d4rl / mujoco-py are not needed** — use the minimal requirements:
 
 ```bash
+conda create -n driftql python=3.10 -y && conda activate driftql   # or mamba / python -m venv
 git clone git@github.com:wge2002/driftql.git && cd driftql
-pip install -r requirements.txt        # same env as FQL/DriftQL; see README for mujoco210 setup
-python jax_check.py                    # verify CudaDevice
-GPUS="0,1,2,3" JOBS_PER_GPU=1 bash scripts/launch_all.sh scripts/phase1_commands.txt
+pip install -r requirements_ogbench.txt
+pip install -U "jax[cuda12]"           # H20 = Hopper, needs CUDA 12 wheels
+python jax_check.py                    # must print CudaDevice, not CpuDevice
+```
+
+(Only install the full `requirements.txt` + MuJoCo 2.1.0 later if/when we run D4RL.)
+
+### Launch (8x H20)
+
+Runs are small MLPs; `XLA_PYTHON_CLIENT_PREALLOCATE=false` is already set in `main.py`, so 3 jobs
+per GPU is comfortable (24 parallel slots; 136 total runs finish in roughly half a day):
+
+```bash
+GPUS="0,1,2,3,4,5,6,7" JOBS_PER_GPU=3 bash scripts/launch_all.sh scripts/phase1_commands.txt
+GPUS="0,1,2,3,4,5,6,7" JOBS_PER_GPU=3 bash scripts/launch_all.sh scripts/phase2_commands.txt
 # ... when done:
 bash scripts/collect_results.sh
 ```

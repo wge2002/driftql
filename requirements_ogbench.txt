@@ -1,0 +1,14 @@
+# Minimal deps for OGBench-only experiments (Phase 1/2). No d4rl / mujoco-py needed.
+# Usage:
+#   pip install -r requirements_ogbench.txt
+#   pip install -U "jax[cuda12]"
+ogbench == 1.1.0
+jax >= 0.6.2
+flax >= 0.10.7
+distrax >= 0.1.5
+ml_collections
+matplotlib
+moviepy
+wandb
+gymnasium == 0.29.1
+numpy == 1.26.4

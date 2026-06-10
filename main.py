@@ -49,18 +49,25 @@ flags.DEFINE_float('p_aug', None, 'Probability of applying image augmentation.')
 flags.DEFINE_integer('frame_stack', None, 'Number of frames to stack.')
 flags.DEFINE_integer('balanced_sampling', 0, 'Whether to use balanced sampling for online fine-tuning.')
 
+flags.DEFINE_string('wandb_mode', 'online', 'W&B mode: online, offline, or disabled.')
+flags.DEFINE_string('run_name', None, 'Custom run name (defaults to sd<seed>_<timestamp>).')
+flags.DEFINE_bool('flat_save_dir', False, 'If True, save logs directly under save_dir/<run_name> (no project/group nesting).')
+
 config_flags.DEFINE_config_file('agent', 'agents/driftql.py', lock_config=False)
 
 
 def main(_):
     # Set up logger.
-    exp_name = get_exp_name(FLAGS.seed)
-    setup_wandb(project='driftql', group=FLAGS.run_group, name=exp_name)
+    exp_name = FLAGS.run_name if FLAGS.run_name else get_exp_name(FLAGS.seed)
+    setup_wandb(project='driftql', group=FLAGS.run_group, name=exp_name, mode=FLAGS.wandb_mode)
 
     save_root = FLAGS.save_dir
     if FLAGS.save_with_env_name:
         save_root = os.path.join(save_root, FLAGS.env_name)
-    FLAGS.save_dir = os.path.join(save_root, wandb.run.project, FLAGS.run_group, exp_name)
+    if FLAGS.flat_save_dir:
+        FLAGS.save_dir = os.path.join(save_root, exp_name)
+    else:
+        FLAGS.save_dir = os.path.join(save_root, wandb.run.project, FLAGS.run_group, exp_name)
     os.makedirs(FLAGS.save_dir, exist_ok=True)
     flag_dict = get_flag_dict()
     with open(os.path.join(FLAGS.save_dir, 'flags.json'), 'w') as f:

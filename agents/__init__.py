@@ -9,6 +9,7 @@ _AGENT_SPECS = {
     'idql': ('agents.idql', 'IDQLAgent'),
     'ifql': ('agents.ifql', 'IFQLAgent'),
     'iql': ('agents.iql', 'IQLAgent'),
+    'qtilted_driftql': ('agents.qtilted_driftql', 'QTiltedDriftQLAgent'),
     'rebrac': ('agents.rebrac', 'ReBRACAgent'),
     'sac': ('agents.sac', 'SACAgent'),
 }

@@ -283,3 +283,11 @@ If you find this work useful, please cite:
   year={2026}
 }
 ```
+
+## QT-DriftQL (this fork)
+
+This fork adds **Q-Tilted DriftQL** (`agents/qtilted_driftql.py`): the additive actor Q-loss is
+removed and the critic instead tilts the *target measure* of the drift field (stop-gradient
+particles are promoted to Q-weighted, trust-gated attractor atoms, with a guaranteed anchor mass
+on the dataset action). See `EXPERIMENTS.md` for the method summary, hyperparameters, run layout,
+diagnostics dictionary, and the Phase-1 launch instructions (`scripts/`).

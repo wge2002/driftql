@@ -1,0 +1,78 @@
+# ============================================================================
+# Phase 1: QT-DriftQL vs baseline DriftQL
+# Envs: cube-double task1 (DriftQL's weak spot) + antmaze-large task1 (its strength)
+# 4 seeds each. Trim seeds (keep 0,1) if compute is tight.
+# Dispatch: GPUS="0,1,2,3" JOBS_PER_GPU=1 bash scripts/launch_all.sh scripts/phase1_commands.txt
+# ============================================================================
+
+# ---------------- A. cube-double-play task1 ----------------
+# Env-tuned hypers from the DriftQL README: temp=0.2 ngen=4 noise_dim=8 alpha=100 q_agg=mean kernel=gaussian
+
+# A0. Baseline DriftQL (reproduction)
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task1-v0 0 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task1-v0 1 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task1-v0 2 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+bash scripts/run_one.sh base_driftql cube-double-play-singletask-task1-v0 3 --agent=agents/driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian
+
+# A1. QT-DriftQL, lambda=2 (main setting)
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 cube-double-play-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+
+# A2. QT-DriftQL, lambda=0.5 (sharp tilt)
+bash scripts/run_one.sh qt_lam05 cube-double-play-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=0.5
+bash scripts/run_one.sh qt_lam05 cube-double-play-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=0.5
+bash scripts/run_one.sh qt_lam05 cube-double-play-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=0.5
+bash scripts/run_one.sh qt_lam05 cube-double-play-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=0.5
+
+# A3. QT-DriftQL, lambda=5 (mild tilt)
+bash scripts/run_one.sh qt_lam5 cube-double-play-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=5.0
+bash scripts/run_one.sh qt_lam5 cube-double-play-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=5.0
+bash scripts/run_one.sh qt_lam5 cube-double-play-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=5.0
+bash scripts/run_one.sh qt_lam5 cube-double-play-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=5.0
+
+# A4. QT-DriftQL, lambda=2 + ngen=16 (particle coverage; atoms = 17)
+bash scripts/run_one.sh qt_lam2_ngen16 cube-double-play-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=16 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2_ngen16 cube-double-play-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=16 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2_ngen16 cube-double-play-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=16 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2_ngen16 cube-double-play-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=16 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0
+
+# A5. Ablation: tilt + additive Q force together (is the tilt complementary or a replacement?)
+bash scripts/run_one.sh qt_lam2_qloss1 cube-double-play-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+bash scripts/run_one.sh qt_lam2_qloss1 cube-double-play-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+bash scripts/run_one.sh qt_lam2_qloss1 cube-double-play-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+bash scripts/run_one.sh qt_lam2_qloss1 cube-double-play-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.2 --agent.drift_ngen=4 --agent.noise_dim=8 --agent.alpha=100 --agent.q_agg=mean --agent.kernel=gaussian --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+
+# ---------------- B. antmaze-large-navigate task1 ----------------
+# Env-tuned hypers from the DriftQL README: temp=0.5 alpha=10 q_agg=mean (kernel=laplace, ngen=32 defaults)
+
+# B0. Baseline DriftQL (reproduction)
+bash scripts/run_one.sh base_driftql antmaze-large-navigate-singletask-task1-v0 0 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql antmaze-large-navigate-singletask-task1-v0 1 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql antmaze-large-navigate-singletask-task1-v0 2 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+bash scripts/run_one.sh base_driftql antmaze-large-navigate-singletask-task1-v0 3 --agent=agents/driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean
+
+# B1. QT-DriftQL, lambda=2
+bash scripts/run_one.sh qt_lam2 antmaze-large-navigate-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 antmaze-large-navigate-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 antmaze-large-navigate-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0
+bash scripts/run_one.sh qt_lam2 antmaze-large-navigate-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0
+
+# B2. QT-DriftQL, lambda=0.5
+bash scripts/run_one.sh qt_lam05 antmaze-large-navigate-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=0.5
+bash scripts/run_one.sh qt_lam05 antmaze-large-navigate-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=0.5
+bash scripts/run_one.sh qt_lam05 antmaze-large-navigate-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=0.5
+bash scripts/run_one.sh qt_lam05 antmaze-large-navigate-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=0.5
+
+# B3. QT-DriftQL, lambda=5
+bash scripts/run_one.sh qt_lam5 antmaze-large-navigate-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=5.0
+bash scripts/run_one.sh qt_lam5 antmaze-large-navigate-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=5.0
+bash scripts/run_one.sh qt_lam5 antmaze-large-navigate-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=5.0
+bash scripts/run_one.sh qt_lam5 antmaze-large-navigate-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=5.0
+
+# B4. Ablation: tilt + additive Q force together
+bash scripts/run_one.sh qt_lam2_qloss1 antmaze-large-navigate-singletask-task1-v0 0 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+bash scripts/run_one.sh qt_lam2_qloss1 antmaze-large-navigate-singletask-task1-v0 1 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+bash scripts/run_one.sh qt_lam2_qloss1 antmaze-large-navigate-singletask-task1-v0 2 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0
+bash scripts/run_one.sh qt_lam2_qloss1 antmaze-large-navigate-singletask-task1-v0 3 --agent=agents/qtilted_driftql.py --agent.drift_temp=0.5 --agent.alpha=10 --agent.q_agg=mean --agent.tilt_lambda=2.0 --agent.q_loss_coef=1.0

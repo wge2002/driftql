@@ -49,6 +49,7 @@ flags.DEFINE_float('p_aug', None, 'Probability of applying image augmentation.')
 flags.DEFINE_integer('frame_stack', None, 'Number of frames to stack.')
 flags.DEFINE_integer('balanced_sampling', 0, 'Whether to use balanced sampling for online fine-tuning.')
 
+flags.DEFINE_bool('require_gpu', True, 'Abort at startup if JAX has no GPU device (prevents silent CPU fallback).')
 flags.DEFINE_string('wandb_mode', 'online', 'W&B mode: online, offline, or disabled.')
 flags.DEFINE_string('run_name', None, 'Custom run name (defaults to sd<seed>_<timestamp>).')
 flags.DEFINE_bool('flat_save_dir', False, 'If True, save logs directly under save_dir/<run_name> (no project/group nesting).')
@@ -57,6 +58,16 @@ config_flags.DEFINE_config_file('agent', 'agents/driftql.py', lock_config=False)
 
 
 def main(_):
+    # Guard against silent CPU fallback (e.g. CPU-only jax wheel installed).
+    devices = jax.devices()
+    has_gpu = any('cuda' in str(d).lower() or 'gpu' in str(d).lower() for d in devices)
+    print(f'JAX devices at startup: {devices}')
+    if FLAGS.require_gpu and not has_gpu:
+        raise RuntimeError(
+            f'JAX sees no GPU (devices={devices}). Fix with: pip install -U "jax[cuda12]" '
+            f'and verify via `python jax_check.py`. To deliberately run on CPU, pass --require_gpu=False.'
+        )
+
     # Set up logger.
     exp_name = FLAGS.run_name if FLAGS.run_name else get_exp_name(FLAGS.seed)
     setup_wandb(project='driftql', group=FLAGS.run_group, name=exp_name, mode=FLAGS.wandb_mode)
